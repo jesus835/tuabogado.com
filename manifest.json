@@ -6,5 +6,19 @@
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#ffffff",
-  "description": "Consultoria legal y asesoria para migrantes en Guatemala."
+  "description": "Consultoria legal y asesoria para migrantes en Guatemala.",
+  "icons": [
+    {
+      "src": "https://i.imgur.com/Kq1fmF2.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "https://i.imgur.com/Kq1fmF2.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
 }
