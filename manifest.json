@@ -1,0 +1,10 @@
+{
+  "name": "TuAbogado GT",
+  "short_name": "TuAbogado",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#ffffff",
+  "description": "Consultoria legal y asesoria para migrantes en Guatemala."
+}
