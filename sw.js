@@ -1,5 +1,11 @@
-const CACHE_NAME = "tuabogado-cache-v1";
-const APP_SHELL = ["/", "/index.html", "/manifest.json"];
+const CACHE_NAME = "tuabogado-cache-v2";
+const APP_SHELL = [
+  "./",
+  "./index.html",
+  "./manifest.json",
+  "./icons/icon-192.png",
+  "./icons/icon-512.png"
+];
 
 self.addEventListener("install", (event) => {
   event.waitUntil(
@@ -33,11 +39,11 @@ self.addEventListener("fetch", (event) => {
       fetch(request)
         .then((networkResponse) => {
           const copy = networkResponse.clone();
-          caches.open(CACHE_NAME).then((cache) => cache.put("/index.html", copy));
+          caches.open(CACHE_NAME).then((cache) => cache.put(request, copy));
           return networkResponse;
         })
         .catch(async () => {
-          const cached = await caches.match("/index.html");
+          const cached = await caches.match(request) || await caches.match("./index.html");
           return (
             cached ||
             new Response("Sin conexion", {
