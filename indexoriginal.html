@@ -1,0 +1,636 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="theme-color" content="#ffffff">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="TuAbogado GT">
+<meta name="description" content="Consultoría Legal, Asesoría sobre Migrantes en Guatemala. Primera consulta GRATIS.">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<title>TuAbogado.com.gt</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --gold: #C9952A;
+  --gold2: #E8B04B;
+  --gold-bg: #FFF8EC;
+  --gold-chip: #FFF3DC;
+  --text: #111827;
+  --text2: #6B7280;
+  --text3: #9CA3AF;
+  --bg: #F5F6FA;
+  --white: #FFFFFF;
+  --border: #E5E7EB;
+  --border2: #F3F4F6;
+  --green: #22C55E;
+  --green-bg: #DCFCE7;
+  --wa: #25D366;
+  --r-sm: 10px;
+  --r-md: 16px;
+  --r-lg: 20px;
+  --r-xl: 28px;
+  --shadow: 0 2px 12px rgba(0,0,0,0.07);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+html, body { height: 100%; min-height: 100dvh; font-family: 'Inter', sans-serif; background: #e5e7eb; overflow: hidden; color: var(--text); }
+#app { display: flex; flex-direction: column; height: 100vh; height: 100dvh; max-width: 430px; margin: 0 auto; background: var(--bg); position: relative; overflow: hidden; box-shadow: 0 0 40px rgba(0,0,0,0.18); }
+
+/* STATUS BAR */
+.status-bar { background: var(--white); height: 26px; display: flex; align-items: center; justify-content: space-between; padding: 0 18px; flex-shrink: 0; }
+.status-time { font-size: 11.5px; font-weight: 700; color: var(--text); }
+.status-icons { display: flex; gap: 4px; align-items: center; font-size: 10px; color: var(--text2); }
+
+/* TOP HEADER */
+.top-header { background: var(--white); padding: 8px 16px 14px; flex-shrink: 0; border-bottom: 1px solid var(--border2); }
+.header-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+.header-logo { display: block; width: 185px; height: 34px; }
+.logo-icon { width: 100%; height: 100%; border-radius: 10px; background: transparent; display: block; overflow: hidden; }
+.logo-text { font-size: 15px; font-weight: 800; color: var(--text); letter-spacing: -0.4px; }
+.logo-text span { color: var(--gold); }
+.header-actions { display: flex; gap: 8px; }
+.hbtn { width: 36px; height: 36px; border-radius: 50%; background: var(--bg); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; cursor: pointer; position: relative; transition: background 0.15s; }
+.hbtn:active { background: var(--border); }
+.hbtn svg { width: 17px; height: 17px; fill: none; stroke: var(--text2); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.notif-dot { position: absolute; top: 3px; right: 3px; width: 7px; height: 7px; border-radius: 50%; background: var(--gold); border: 1.5px solid var(--white); }
+
+/* SEARCH */
+.search-bar { display: flex; align-items: center; gap: 10px; background: var(--bg); border: 1.5px solid var(--border); border-radius: var(--r-md); padding: 10px 14px; cursor: pointer; transition: border-color 0.15s; }
+.search-bar:active { border-color: var(--gold); }
+.search-bar svg { width: 16px; height: 16px; fill: none; stroke: var(--text3); stroke-width: 2; stroke-linecap: round; flex-shrink: 0; }
+.search-placeholder { font-size: 13px; color: var(--text3); flex: 1; }
+.search-filter { width: 30px; height: 30px; border-radius: 8px; background: var(--gold-bg); border: none; display: flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0; }
+.search-filter svg { width: 14px; height: 14px; fill: none; stroke: var(--gold); stroke-width: 2; stroke-linecap: round; }
+
+/* SCROLL */
+.scroll-area { flex: 1; min-height: 0; overflow-y: auto; -webkit-overflow-scrolling: touch; overscroll-behavior: contain; padding-bottom: 10px; }
+.scroll-area::-webkit-scrollbar { display: none; }
+.page { display: none; }
+.page.active { display: block; }
+.bottom-spacer { height: 0; }
+
+/* CHIPS */
+.chips-row { display: flex; gap: 8px; padding: 14px 16px 0; overflow-x: auto; }
+.chips-row::-webkit-scrollbar { display: none; }
+.chip { display: flex; align-items: center; gap: 6px; padding: 7px 14px; border-radius: 40px; font-size: 12px; font-weight: 600; white-space: nowrap; cursor: pointer; flex-shrink: 0; transition: all 0.15s; border: 1.5px solid transparent; }
+.chip-all { background: var(--gold); color: #fff; }
+.chip-default { background: var(--white); color: var(--text2); border-color: var(--border); }
+.chip-default:active { background: var(--gold-chip); border-color: var(--gold); color: var(--gold); }
+.ico-svg { width: 18px; height: 18px; display: inline-block; vertical-align: middle; fill: none; stroke: currentColor; stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
+.chip .ico-svg { width: 14px; height: 14px; margin-right: 2px; }
+.hero-btn .ico-svg, .submit-btn .ico-svg { width: 15px; height: 15px; margin-right: 5px; }
+.svc-chip-icon .ico-svg { width: 22px; height: 22px; }
+.svc-row-icon .ico-svg, .contact-ico .ico-svg, .value-icon .ico-svg, .nav-center-circle .ico-svg { width: 22px; height: 22px; }
+.nav-center-circle .ico-svg { stroke: #111827; }
+.lawyer-avatar-svg { width: 74px; height: 74px; display: block; fill: none; stroke: #111827; stroke-width: 2.1; stroke-linecap: round; stroke-linejoin: round; }
+
+/* HERO BANNER */
+.hero-banner { margin: 14px 16px 0; background: linear-gradient(130deg, #1a2744 0%, #2d4080 55%, #1e3a6e 100%); border-radius: var(--r-xl); padding: 22px 20px 0; position: relative; overflow: hidden; min-height: 155px; }
+.hero-banner::before { content: ''; position: absolute; top: -40px; right: -20px; width: 180px; height: 180px; border-radius: 50%; background: rgba(201,149,42,0.15); }
+.hero-popular { display: inline-flex; align-items: center; gap: 5px; background: rgba(255,255,255,0.15); border-radius: 20px; padding: 4px 10px; font-size: 10px; font-weight: 600; color: rgba(255,255,255,0.9); margin-bottom: 8px; }
+.hero-popular::before { content: '★'; color: var(--gold2); }
+.hero-title { font-size: 20px; font-weight: 800; color: #fff; line-height: 1.2; margin-bottom: 6px; letter-spacing: -0.3px; }
+.hero-title em { color: var(--gold2); font-style: normal; }
+.hero-sub { font-size: 11px; color: rgba(255,255,255,0.6); margin-bottom: 14px; line-height: 1.5; }
+.hero-btn { display: inline-flex; align-items: center; gap: 6px; background: var(--white); color: var(--text); border: none; border-radius: var(--r-sm); padding: 9px 16px; font-size: 12px; font-weight: 700; cursor: pointer; font-family: 'Inter', sans-serif; margin-bottom: 18px; transition: opacity 0.15s; }
+.hero-btn:active { opacity: 0.85; }
+.hero-avatar { position: absolute; right: 6px; bottom: -53px; width: 361px; height: 361px; transform: translate(23%, 8%); }
+.hero-dots { display: flex; gap: 5px; position: relative; top: -10px; left: 2%; }
+.hero-dot { width: 6px; height: 6px; border-radius: 3px; background: rgba(255,255,255,0.25); }
+.hero-dot.act { width: 18px; background: var(--gold2); }
+
+/* SECTION HEADER */
+.sec-header { display: flex; align-items: center; justify-content: space-between; padding: 18px 16px 10px; }
+.sec-title { font-size: 15px; font-weight: 700; color: var(--text); }
+.sec-more { font-size: 12px; font-weight: 600; color: var(--gold); cursor: pointer; }
+
+/* SERVICE CHIPS */
+.svc-chips { display: flex; gap: 10px; padding: 0 16px; overflow-x: auto; }
+.svc-chips::-webkit-scrollbar { display: none; }
+.svc-chip { display: flex; flex-direction: column; align-items: center; gap: 5px; background: var(--white); border: 1px solid var(--border); border-radius: var(--r-lg); padding: 12px 16px; cursor: pointer; flex-shrink: 0; min-width: 76px; transition: all 0.15s; box-shadow: var(--shadow); }
+.svc-chip:active { transform: scale(0.95); border-color: var(--gold); }
+.svc-chip-icon { font-size: 22px; }
+.svc-chip-label { font-size: 10px; font-weight: 600; color: var(--text2); text-align: center; line-height: 1.3; }
+.svc-chip.act2 { background: var(--gold-chip); border-color: var(--gold); }
+.svc-chip.act2 .svc-chip-label { color: var(--gold); }
+
+/* LAWYER CARDS */
+.lawyers-scroll { display: flex; gap: 12px; padding: 0 16px; overflow-x: auto; }
+.lawyers-scroll::-webkit-scrollbar { display: none; }
+.lawyer-card { background: var(--white); border-radius: var(--r-lg); width: 148px; flex-shrink: 0; overflow: hidden; box-shadow: var(--shadow); cursor: pointer; transition: transform 0.15s; }
+.lawyer-card:active { transform: scale(0.97); }
+.lawyer-photo { height: 118px; display: flex; align-items: flex-end; justify-content: center; position: relative; overflow: hidden; }
+.lawyer-badge { position: absolute; top: 8px; right: 8px; width: 20px; height: 20px; background: #1E3A6E; color: #FFFFFF; border: 1px solid #E8B04B; font-size: 12px; font-weight: 800; display: flex; align-items: center; justify-content: center; border-radius: 50%; }
+.lawyer-info { padding: 10px 10px 12px; }
+.lawyer-name { font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 2px; }
+.lawyer-spec { font-size: 10px; color: var(--text3); margin-bottom: 6px; line-height: 1.4; }
+.lawyer-rating { display: flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 600; color: var(--text); }
+.lstar { color: #F59E0B; }
+.lrev { font-size: 10px; color: var(--text3); font-weight: 400; }
+
+/* SERVICE ROWS */
+.svc-list { display: flex; flex-direction: column; gap: 10px; padding: 0 16px; }
+.svc-row { background: var(--white); border-radius: var(--r-md); padding: 14px 16px; display: flex; align-items: center; gap: 14px; box-shadow: var(--shadow); cursor: pointer; transition: all 0.15s; border: 1px solid transparent; }
+.svc-row:active { border-color: var(--gold); transform: scale(0.99); }
+.svc-row-icon { width: 46px; height: 46px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; }
+.svc-row-name { font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 3px; }
+.svc-row-sub { font-size: 11px; color: var(--text3); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.svc-row-arrow { color: var(--text3); font-size: 18px; }
+.bg-gold { background: #FFF8EC; } .bg-blue { background: #EFF6FF; } .bg-green { background: #DCFCE7; }
+.bg-purple { background: #F3F4FF; } .bg-orange { background: #FFF7ED; } .bg-pink { background: #FFF1F5; }
+
+/* CONTACT */
+.contact-list { display: flex; flex-direction: column; gap: 10px; padding: 0 16px; }
+.contact-item { background: var(--white); border-radius: var(--r-md); padding: 14px 16px; display: flex; align-items: center; gap: 14px; box-shadow: var(--shadow); cursor: pointer; text-decoration: none; transition: all 0.15s; }
+.contact-item:active { transform: scale(0.99); }
+.contact-ico { width: 44px; height: 44px; border-radius: 13px; display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
+.cico-wa { background: #DCFCE7; } .cico-phone { background: #EFF6FF; } .cico-fb { background: #EFF6FF; } .cico-ig { background: #FFF1F5; }
+.ci-label { font-size: 10px; color: var(--text3); font-weight: 600; text-transform: uppercase; letter-spacing: 0.7px; }
+.ci-value { font-size: 14px; font-weight: 700; color: var(--text); margin-top: 2px; }
+.ci-badge { font-size: 10px; font-weight: 700; padding: 3px 9px; border-radius: 20px; flex-shrink: 0; }
+.cbg-wa { background: #DCFCE7; color: #22C55E; } .cbg-free { background: #FFF8EC; color: var(--gold); }
+
+/* FORM */
+.form-box { background: var(--white); border-radius: var(--r-lg); padding: 18px; margin: 0 16px; box-shadow: var(--shadow); }
+.form-group { margin-bottom: 14px; }
+.form-label { font-size: 11px; font-weight: 700; color: var(--text2); margin-bottom: 7px; display: block; letter-spacing: 0.5px; text-transform: uppercase; }
+.form-input { width: 100%; background: var(--bg); border: 1.5px solid var(--border); border-radius: var(--r-sm); padding: 12px 14px; font-size: 14px; color: var(--text); font-family: 'Inter', sans-serif; outline: none; transition: border-color 0.18s; }
+.form-input::placeholder { color: var(--text3); }
+.form-input:focus { border-color: var(--gold); background: var(--white); }
+.form-textarea { resize: none; height: 86px; }
+.submit-btn { width: 100%; background: var(--wa); color: #fff; border: none; border-radius: var(--r-sm); padding: 14px; font-size: 14px; font-weight: 700; cursor: pointer; font-family: 'Inter', sans-serif; margin-top: 4px; transition: opacity 0.15s, transform 0.15s; }
+.submit-btn:active { opacity: 0.85; transform: scale(0.98); }
+.submit-success { background: #DCFCE7; border: 1px solid rgba(34,197,94,0.3); border-radius: var(--r-sm); padding: 12px 16px; color: var(--green); font-size: 13px; font-weight: 600; text-align: center; margin-top: 10px; display: none; }
+
+/* NOSOTROS */
+.about-card { background: var(--gold-bg); border: 1px solid rgba(201,149,42,0.2); border-radius: var(--r-lg); padding: 18px; margin: 0 16px; }
+.about-card p { font-size: 13px; line-height: 1.75; color: var(--text2); }
+.value-card { background: var(--white); border-radius: var(--r-md); padding: 14px 16px; display: flex; align-items: center; gap: 14px; box-shadow: var(--shadow); margin: 0 16px; }
+.value-icon { width: 42px; height: 42px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
+.value-name { font-size: 14px; font-weight: 700; color: var(--text); }
+.value-sub { font-size: 11px; color: var(--text3); margin-top: 2px; }
+
+/* BOTTOM NAV */
+.bottom-nav { background: var(--white); border-top: 1px solid var(--border); display: flex; padding: 8px 0 20px; flex-shrink: 0; align-items: flex-end; position: relative; z-index: 100; overflow: visible; }
+.nav-item { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; cursor: pointer; padding: 4px 0; border: none; background: none; font-family: 'Inter', sans-serif; transition: opacity 0.15s; }
+.nav-item:active { opacity: 0.6; }
+.nav-svg svg { width: 22px; height: 22px; fill: none; stroke: var(--text3); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; transition: stroke 0.15s; display: block; }
+.nav-label { font-size: 9.5px; font-weight: 500; color: var(--text3); }
+.nav-item.active .nav-label { color: var(--gold); font-weight: 700; }
+.nav-item.active .nav-svg svg { stroke: var(--gold); }
+.nav-center { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; cursor: pointer; border: none; background: none; font-family: 'Inter', sans-serif; padding: 0; margin-bottom: -2px; position: relative; z-index: 120; }
+.nav-center-circle { width: 50px; height: 50px; border-radius: 50%; background: linear-gradient(135deg, var(--gold) 0%, var(--gold2) 100%); display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 14px rgba(201,149,42,0.4); font-size: 22px; margin-top: -18px; position: relative; z-index: 130; }
+.nav-center .nav-label { color: var(--gold); font-weight: 700; }
+
+/* SHEET */
+.sheet-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.45); display: none; align-items: flex-end; z-index: 100; animation: fadeIn 0.2s ease; backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); }
+.sheet-overlay.open { display: flex; }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+.sheet { background: var(--white); border-radius: 24px 24px 0 0; padding: 12px 18px 36px; width: 100%; max-height: calc(100dvh - 16px); overflow-y: auto; animation: slideUp 0.3s cubic-bezier(0.22,1,0.36,1); }
+@keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+.sheet-handle { width: 36px; height: 4px; border-radius: 2px; background: var(--border); margin: 0 auto 18px; }
+.sheet-title { font-size: 20px; font-weight: 800; color: var(--text); margin-bottom: 4px; letter-spacing: -0.3px; }
+.sheet-sub { font-size: 12px; color: var(--text3); margin-bottom: 20px; }
+.sheet-list { display: flex; flex-direction: column; gap: 8px; }
+.sheet-item { padding: 12px 14px; background: var(--bg); border-radius: var(--r-sm); font-size: 13px; color: var(--text2); display: flex; align-items: center; gap: 10px; }
+.sheet-item::before { content: '•'; font-size: 14px; color: var(--gold); }
+
+/* INSTALL MODAL */
+.install-modal-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.5); display: none; align-items: center; justify-content: center; z-index: 180; padding: 18px; }
+.install-modal-overlay.open { display: flex; }
+.install-modal { width: 100%; max-width: 340px; background: #fff; border-radius: 18px; padding: 18px; box-shadow: 0 16px 40px rgba(0,0,0,0.24); }
+.install-modal-title { font-size: 16px; font-weight: 800; color: var(--text); margin-bottom: 8px; }
+.install-modal-text { font-size: 13px; color: var(--text2); line-height: 1.5; }
+.install-modal-actions { margin-top: 14px; display: flex; justify-content: flex-end; }
+.install-modal-close { border: 1px solid var(--border); background: var(--bg); color: var(--text); border-radius: 10px; padding: 8px 12px; font-size: 12px; font-weight: 700; cursor: pointer; }
+
+/* HERO fix for narrow phones (e.g., 360x740) */
+@media (max-width: 380px) {
+  .hero-title,
+  .hero-sub,
+  .hero-btn,
+  .hero-popular { position: relative; z-index: 2; max-width: 58%; }
+  .hero-avatar {
+    width: 305px;
+    height: 305px;
+    right: -6px;
+    bottom: -42px;
+    transform: translate(16%, 6%);
+    z-index: 1;
+  }
+}
+/* TABLET */
+@media (min-width: 768px) {
+  html, body { overflow: auto; }
+  #app { max-width: 760px; min-height: 100vh; min-height: 100dvh; height: 100vh; height: 100dvh; }
+  .top-header { padding: 10px 20px 16px; }
+  .chips-row, .svc-chips, .lawyers-scroll, .svc-list, .contact-list { padding-left: 20px; padding-right: 20px; }
+  .sec-header { padding-left: 20px; padding-right: 20px; }
+  .hero-banner, .form-box, .about-card, .value-card { margin-left: 20px; margin-right: 20px; }
+  .lawyer-card { width: 180px; }
+}
+
+/* DESKTOP */
+@media (min-width: 1100px) {
+  html, body { overflow: auto; }
+  #app {
+    width: 100%;
+    max-width: none;
+    height: 100vh;
+    height: 100dvh;
+    margin: 0;
+    box-shadow: none;
+  }
+  .top-header { padding: 12px 26px 18px; }
+  .chips-row, .svc-chips, .lawyers-scroll, .svc-list, .contact-list { padding-left: 26px; padding-right: 26px; }
+  .sec-header { padding-left: 26px; padding-right: 26px; }
+  .hero-banner, .form-box, .about-card, .value-card { margin-left: 26px; margin-right: 26px; }
+  .svc-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+  .lawyers-scroll { overflow-x: visible; flex-wrap: wrap; }
+  .lawyer-card { width: calc(25% - 9px); min-width: 220px; }
+}
+</style>
+</head>
+<body>
+<div id="app">
+
+<div class="top-header">
+  <div class="header-row">
+    <div class="header-logo">
+      <div class="logo-icon"><img src="https://i.imgur.com/odRFqa8.png" alt="Logo TuAbogado" style="width:100%;height:100%;object-fit:cover;"></div>
+    </div>
+    <div class="header-actions">
+      <button class="hbtn" onclick="window.open('https://wa.me/+50239888383?text='+encodeURIComponent('¡Hola! Quisiera hacer una consulta.'),'_blank')">
+        <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      </button>
+      <button class="hbtn" id="install-btn" onclick="installApp()" title="Instalar app">
+        <svg viewBox="0 0 24 24"><path d="M12 3v12"/><path d="M7 10l5 5 5-5"/><path d="M5 21h14"/></svg>
+      </button>
+      <button class="hbtn" style="position:relative" onclick="openSheet('notif')">
+        <svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+        <div class="notif-dot"></div>
+      </button>
+    </div>
+  </div>
+  <div class="search-bar" onclick="openSheet('buscar')">
+    <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    <span class="search-placeholder">¿Qué servicio legal necesitas?</span>
+    <div class="search-filter"><svg viewBox="0 0 24 24"><line x1="4" y1="6" x2="20" y2="6"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="11" y1="18" x2="13" y2="18"/></svg></div>
+  </div>
+</div>
+
+<div class="scroll-area">
+
+  <!-- HOME -->
+  <div class="page active" id="page-home">
+    <div class="chips-row">
+      <div class="chip chip-all"><svg class="ico-svg" viewBox="0 0 24 24"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8L12 3z"/></svg> Todos</div>
+      <div class="chip chip-default" onclick="openSheet('servicio-1')"><svg class="ico-svg" viewBox="0 0 24 24"><path d="M12 3v4"/><path d="M5 7h14"/><path d="M7 7l-3 6h6l-3-6z"/><path d="M17 7l-3 6h6l-3-6z"/><path d="M12 13v8"/></svg> Legal</div>
+      <div class="chip chip-default" onclick="openSheet('servicio-2')"><svg class="ico-svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3a14 14 0 0 1 0 18"/><path d="M12 3a14 14 0 0 0 0 18"/></svg> Migración</div>
+      <div class="chip chip-default" onclick="openSheet('servicio-3')"><svg class="ico-svg" viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M9 7V5h6v2"/><path d="M3 12h18"/></svg> Empresas</div>
+      <div class="chip chip-default" onclick="openSheet('servicio-5')"><svg class="ico-svg" viewBox="0 0 24 24"><path d="M8 11l3 3 3-3"/><path d="M4 10l4-4 4 4-4 4-4-4z"/><path d="M12 10l4-4 4 4-4 4-4-4z"/></svg> Laboral</div>
+    </div>
+
+    <div class="hero-banner">
+      <div class="hero-popular">Popular</div>
+      <div class="hero-title">Consulta con un<br><em>Abogado Experto</em></div>
+      <div class="hero-sub">Constitucional, Penal, Civil, y Mas.<br>¡Primera consulta GRATIS!</div>
+      <button class="hero-btn" onclick="openSheet('consulta')"><svg class="ico-svg" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Consultar Gratis</button>
+      <div class="hero-avatar"><img src="https://i.imgur.com/1bclWXv.png" alt="Abogado" style="width:100%;height:100%;object-fit:contain;"></div>
+      <div class="hero-dots"><div class="hero-dot act"></div><div class="hero-dot"></div><div class="hero-dot"></div></div>
+    </div>
+
+    <div class="sec-header">
+      <div class="sec-title">Nuestros Servicios</div>
+      <div class="sec-more" onclick="navigateTo('servicios')">Ver todos ›</div>
+    </div>
+    <div class="svc-chips">
+      <div class="svc-chip act2" onclick="openSheet('servicio-1')"><div class="svc-chip-icon"><svg class="ico-svg" viewBox="0 0 24 24"><path d="M12 3v4"/><path d="M5 7h14"/><path d="M7 7l-3 6h6l-3-6z"/><path d="M17 7l-3 6h6l-3-6z"/><path d="M12 13v8"/></svg></div><div class="svc-chip-label">Consultoría Legal</div></div>
+      <div class="svc-chip" onclick="openSheet('servicio-2')"><div class="svc-chip-icon"><svg class="ico-svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3a14 14 0 0 1 0 18"/><path d="M12 3a14 14 0 0 0 0 18"/></svg></div><div class="svc-chip-label">Migración</div></div>
+      <div class="svc-chip" onclick="openSheet('servicio-3')"><div class="svc-chip-icon"><svg class="ico-svg" viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M9 7V5h6v2"/><path d="M3 12h18"/></svg></div><div class="svc-chip-label">Empresas</div></div>
+      <div class="svc-chip" onclick="openSheet('servicio-5')"><div class="svc-chip-icon"><svg class="ico-svg" viewBox="0 0 24 24"><path d="M8 11l3 3 3-3"/><path d="M4 10l4-4 4 4-4 4-4-4z"/><path d="M12 10l4-4 4 4-4 4-4-4z"/></svg></div><div class="svc-chip-label">Laboral</div></div>
+      <div class="svc-chip" onclick="openSheet('servicio-6')"><div class="svc-chip-icon"><svg class="ico-svg" viewBox="0 0 24 24"><path d="M3 10h18"/><path d="M5 10v8"/><path d="M9 10v8"/><path d="M15 10v8"/><path d="M19 10v8"/><path d="M2 18h20"/><path d="M12 3l9 7H3l9-7z"/></svg></div><div class="svc-chip-label">DDHH</div></div>
+    </div>
+
+    <div class="sec-header">
+      <div class="sec-title">Nuestro Equipo</div>
+      <div class="sec-more" onclick="navigateTo('nosotros')">Ver más ›</div>
+    </div>
+    <div class="lawyers-scroll">
+      <div class="lawyer-card" onclick="openSheet('consulta')">
+        <div class="lawyer-photo" style="background:linear-gradient(135deg,#dde8ff,#b8ccf8)">
+          <div class="lawyer-badge">✓</div>
+          <img src="https://i.imgur.com/UMre3uf.png" alt="Lic. Consultor" style="width:100%;height:100%;object-fit:cover;">
+        </div>
+        <div class="lawyer-info">
+          <div class="lawyer-name">Lic. Consultor</div>
+          <div class="lawyer-spec">Derecho Civil · Penal</div>
+          <div class="lawyer-rating"><span class="lstar">★</span> 4.9 <span class="lrev">(200+)</span></div>
+        </div>
+      </div>
+      <div class="lawyer-card" onclick="openSheet('consulta')">
+        <div class="lawyer-photo" style="background:linear-gradient(135deg,#fce8d5,#f8c8a0)">
+          <div class="lawyer-badge">✓</div>
+          <img src="https://i.imgur.com/27F9lOk.png" alt="Lic. Migrante" style="width:100%;height:100%;object-fit:cover;">
+        </div>
+        <div class="lawyer-info">
+          <div class="lawyer-name">Lic. Migrante</div>
+          <div class="lawyer-spec">Migración · DDHH</div>
+          <div class="lawyer-rating"><span class="lstar">★</span> 4.8 <span class="lrev">(180+)</span></div>
+        </div>
+      </div>
+      <div class="lawyer-card" onclick="openSheet('consulta')">
+        <div class="lawyer-photo" style="background:linear-gradient(135deg,#d5f5e3,#a9dfbf)">
+          <div class="lawyer-badge">✓</div>
+          <img src="https://i.imgur.com/LCM5oGL.png" alt="Lic. Corporativo" style="width:100%;height:100%;object-fit:cover;">
+        </div>
+        <div class="lawyer-info">
+          <div class="lawyer-name">Lic. Corporativo</div>
+          <div class="lawyer-spec">Empresas · PYMEs</div>
+          <div class="lawyer-rating"><span class="lstar">★</span> 4.9 <span class="lrev">(150+)</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="bottom-spacer"></div>
+  </div>
+
+  <!-- SERVICIOS -->
+  <div class="page" id="page-servicios">
+    <div class="sec-header"><div class="sec-title">Todas las Áreas</div></div>
+    <div class="svc-list">
+      <div class="svc-row" onclick="openSheet('servicio-1')"><div class="svc-row-icon bg-gold"><svg class="ico-svg" viewBox="0 0 24 24"><path d="M12 3v4"/><path d="M5 7h14"/><path d="M7 7l-3 6h6l-3-6z"/><path d="M17 7l-3 6h6l-3-6z"/><path d="M12 13v8"/></svg></div><div style="flex:1;min-width:0"><div class="svc-row-name">Consultoría Legal</div><div class="svc-row-sub">Constitucional · Penal · Civil · Mercantil</div></div><div class="svc-row-arrow">›</div></div>
+      <div class="svc-row" onclick="openSheet('servicio-2')"><div class="svc-row-icon bg-blue"><svg class="ico-svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3a14 14 0 0 1 0 18"/><path d="M12 3a14 14 0 0 0 0 18"/></svg></div><div style="flex:1;min-width:0"><div class="svc-row-name">Derecho Internacional</div><div class="svc-row-sub">Migración · Asesoría a Migrantes</div></div><div class="svc-row-arrow">›</div></div>
+      <div class="svc-row" onclick="openSheet('servicio-3')"><div class="svc-row-icon bg-purple"><svg class="ico-svg" viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M9 7V5h6v2"/><path d="M3 12h18"/></svg></div><div style="flex:1;min-width:0"><div class="svc-row-name">Empresas y PYMEs</div><div class="svc-row-sub">Corporativo · Emprendedores</div></div><div class="svc-row-arrow">›</div></div>
+      <div class="svc-row" onclick="openSheet('servicio-4')"><div class="svc-row-icon bg-green"><svg class="ico-svg" viewBox="0 0 24 24"><path d="M5 20c9 0 14-5 14-14-9 0-14 5-14 14z"/><path d="M8 16c2-2 4-4 8-5"/></svg></div><div style="flex:1;min-width:0"><div class="svc-row-name">Derecho Ambiental</div><div class="svc-row-sub">Protección · Patrimonio Cultural</div></div><div class="svc-row-arrow">›</div></div>
+      <div class="svc-row" onclick="openSheet('servicio-5')"><div class="svc-row-icon bg-orange"><svg class="ico-svg" viewBox="0 0 24 24"><path d="M8 11l3 3 3-3"/><path d="M4 10l4-4 4 4-4 4-4-4z"/><path d="M12 10l4-4 4 4-4 4-4-4z"/></svg></div><div style="flex:1;min-width:0"><div class="svc-row-name">Derecho Laboral</div><div class="svc-row-sub">Contratos · Conflictos · Prestaciones</div></div><div class="svc-row-arrow">›</div></div>
+      <div class="svc-row" onclick="openSheet('servicio-6')"><div class="svc-row-icon bg-pink"><svg class="ico-svg" viewBox="0 0 24 24"><path d="M3 10h18"/><path d="M5 10v8"/><path d="M9 10v8"/><path d="M15 10v8"/><path d="M19 10v8"/><path d="M2 18h20"/><path d="M12 3l9 7H3l9-7z"/></svg></div><div style="flex:1;min-width:0"><div class="svc-row-name">Derechos Humanos</div><div class="svc-row-sub">Defensa · Amparo · Internacional</div></div><div class="svc-row-arrow">›</div></div>
+    </div>
+    <div class="bottom-spacer"></div>
+  </div>
+
+  <!-- CONTACTO -->
+  <div class="page" id="page-contacto">
+    <div class="sec-header"><div class="sec-title">Contáctanos</div></div>
+    <div class="contact-list">
+      <a class="contact-item" href="https://wa.me/+50239888383?text=Hola%2C%20quiero%20mi%20consulta%20gratuita" target="_blank">
+        <div class="contact-ico cico-wa"><svg viewBox="0 0 32 32" style="width:22px;height:22px;display:block"><circle cx="16" cy="16" r="16" fill="#25D366"/><path d="M23.1 16.4c0 3.9-3.2 7.1-7.1 7.1-1.2 0-2.3-.3-3.3-.8L8 24l1.3-4.6c-.6-1-1-2.1-1-3.3 0-3.9 3.2-7.1 7.1-7.1s7.1 3.2 7.1 7.1z" fill="#fff"/><path d="M20.4 18.1c-.2-.1-1.1-.5-1.3-.6-.2-.1-.3-.1-.5.1s-.6.6-.7.7-.2.2-.4.1c-.2-.1-.9-.3-1.7-1-.6-.5-1-1.1-1.1-1.3s0-.3.1-.4c.1-.1.2-.2.3-.3.1-.1.1-.2.2-.3.1-.1 0-.2 0-.3s-.5-1.2-.7-1.6c-.2-.4-.3-.3-.5-.3h-.4c-.1 0-.3.1-.4.2-.1.2-.6.6-.6 1.5 0 .9.6 1.8.7 1.9.1.1 1.3 2 3.2 2.8.4.2.8.3 1.1.4.5.2 1 .2 1.4.1.4-.1 1.1-.5 1.2-.9.2-.5.2-.9.1-1 0-.1-.2-.2-.4-.2z" fill="#25D366"/></svg></div>
+        <div style="flex:1"><div class="ci-label">WhatsApp</div><div class="ci-value">(502) 3988-8383</div></div>
+        <span class="ci-badge cbg-wa">GRATIS</span>
+      </a>
+      <a class="contact-item" href="tel:+50239888383">
+        <div class="contact-ico cico-phone"><svg viewBox="0 0 24 24" style="width:22px;height:22px;display:block"><path fill="#6B7280" d="M20.49 15.38l-3.29-.38a2 2 0 0 0-1.66.57l-2.38 2.38a15.5 15.5 0 0 1-7.1-7.1l2.38-2.38a2 2 0 0 0 .57-1.66l-.38-3.29A2 2 0 0 0 6.64 2H4.4a2 2 0 0 0-2 2.24C2.96 14.6 9.4 21.04 19.76 21.6A2 2 0 0 0 22 19.6v-2.24a2 2 0 0 0-1.51-1.98z"/></svg></div>
+        <div style="flex:1"><div class="ci-label">Teléfono</div><div class="ci-value">(502) 3988-8383</div></div>
+        <span class="ci-badge cbg-free">Llamar</span>
+      </a>
+      <a class="contact-item" href="https://www.facebook.com/profile.php?id=61556349238149" target="_blank">
+        <div class="contact-ico cico-fb"><svg viewBox="0 0 32 32" style="width:22px;height:22px;display:block"><circle cx="16" cy="16" r="16" fill="#1877F2"/><path d="M18.3 9.8h2.2V6.3h-2.6c-3.1 0-4.9 1.9-4.9 5.2v2.1h-2.3v3.4H13v8h3.7v-8h3l.5-3.4h-3.5v-1.7c0-1 .3-1.9 1.6-1.9z" fill="#fff"/></svg></div>
+        <div style="flex:1"><div class="ci-label">Facebook</div><div class="ci-value">TuAbogado.com.gt</div></div>
+        <span style="font-size:18px;color:var(--text3)">›</span>
+      </a>
+      <a class="contact-item" href="https://www.instagram.com/tuabogado.com.gt/" target="_blank">
+        <div class="contact-ico cico-ig"><svg viewBox="0 0 32 32" style="width:22px;height:22px;display:block"><defs><linearGradient id="igGrad" x1="0%" y1="100%" x2="100%" y2="0%"><stop offset="0%" stop-color="#F58529"/><stop offset="35%" stop-color="#DD2A7B"/><stop offset="70%" stop-color="#8134AF"/><stop offset="100%" stop-color="#515BD4"/></linearGradient></defs><rect x="2" y="2" width="28" height="28" rx="8" fill="url(#igGrad)"/><circle cx="16" cy="16" r="6" fill="none" stroke="#fff" stroke-width="2.2"/><circle cx="23" cy="9" r="1.5" fill="#fff"/></svg></div>
+        <div style="flex:1"><div class="ci-label">Instagram</div><div class="ci-value">@tuabogado.com.gt</div></div>
+        <span style="font-size:18px;color:var(--text3)">›</span>
+      </a>
+      <a class="contact-item" href="https://gt.linkedin.com/in/tu-abogado-guatemala-82116a2b5" target="_blank" rel="noopener noreferrer">
+        <div class="contact-ico cico-fb"><svg viewBox="0 0 32 32" style="width:22px;height:22px;display:block"><rect x="0" y="0" width="32" height="32" rx="8" fill="#0A66C2"/><rect x="7" y="12" width="4" height="13" fill="#fff"/><circle cx="9" cy="8.5" r="2.2" fill="#fff"/><path d="M15 12h3.8v1.8c.6-1.2 2.1-2.2 4.2-2.2 4 0 5 2.6 5 6.1V25h-4v-6.1c0-1.5 0-3.5-2.2-3.5s-2.5 1.7-2.5 3.4V25H15V12z" fill="#fff"/></svg></div>
+        <div style="flex:1"><div class="ci-label">LinkedIn</div><div class="ci-value">Tu Abogado Guatemala</div></div>
+        <span style="font-size:18px;color:var(--text3)">›</span>
+      </a>
+      <a class="contact-item" href="https://tuabogado.com.gt/" target="_blank" rel="noopener noreferrer">
+        <div class="contact-ico cico-phone"><svg viewBox="0 0 24 24" style="width:22px;height:22px;display:block"><circle cx="12" cy="12" r="9" fill="#6B7280"/><path d="M3 12h18" stroke="#fff" stroke-width="1.8" fill="none"/><path d="M12 3a14 14 0 0 1 0 18" stroke="#fff" stroke-width="1.8" fill="none"/><path d="M12 3a14 14 0 0 0 0 18" stroke="#fff" stroke-width="1.8" fill="none"/></svg></div>
+        <div style="flex:1"><div class="ci-label">Sitio Web</div><div class="ci-value">tuabogado.com.gt</div></div>
+        <span style="font-size:18px;color:var(--text3)">›</span>
+      </a>
+    </div>
+    <div class="sec-header" style="padding-top:22px"><div class="sec-title">Formulario de consulta</div></div>
+    <div class="form-box">
+      <div class="form-group"><label class="form-label">Nombre completo</label><input class="form-input" type="text" placeholder="Tu nombre" id="f-nombre"></div>
+      <div class="form-group"><label class="form-label">Teléfono o email</label><input class="form-input" type="text" placeholder="¿Cómo contactarte?" id="f-contacto"></div>
+      <div class="form-group"><label class="form-label">Área legal</label>
+        <select class="form-input" id="f-area">
+          <option value="">Seleccionar área...</option>
+          <option>Derecho Constitucional</option><option>Derecho Penal</option><option>Derecho Civil</option>
+          <option>Derecho Mercantil</option><option>Derecho Laboral</option><option>Derecho Ambiental</option>
+          <option>Derechos Humanos</option><option>Derecho Internacional / Migración</option>
+          <option>Empresas / PYMEs</option><option>Otro</option>
+        </select>
+      </div>
+      <div class="form-group"><label class="form-label">Descripción del caso</label><textarea class="form-input form-textarea" placeholder="Describe brevemente tu situación..." id="f-mensaje"></textarea></div>
+      <button class="submit-btn" onclick="submitForm()"><svg class="ico-svg" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Enviar por WhatsApp →</button>
+      <div class="submit-success" id="form-success">¡Abriendo WhatsApp! Completa el mensaje para enviarlo.</div>
+    </div>
+    <div class="bottom-spacer"></div>
+  </div>
+
+  <!-- NOSOTROS -->
+  <div class="page" id="page-nosotros">
+    <div class="sec-header"><div class="sec-title">Quiénes Somos</div></div>
+    <div class="about-card"><p>En TuAbogado.com.gt nos dedicamos a brindar asesoramiento jurídico integral en Guatemala, con soluciones personalizadas en Derecho Constitucional, Penal, Civil, Mercantil, Corporativo, Laboral, Ambiental, Derechos Humanos y más. Especializados en Derecho Internacional y Asesoría sobre Migrantes.</p></div>
+    <div class="sec-header" style="padding-top:20px"><div class="sec-title">Nuestros Valores</div></div>
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <div class="value-card"><div class="value-icon bg-gold"><svg class="ico-svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="1.5" fill="currentColor" stroke="none"/></svg></div><div><div class="value-name">Servicio transparente</div><div class="value-sub">Comunicación clara y comprensible</div></div></div>
+      <div class="value-card"><div class="value-icon bg-blue"><svg class="ico-svg" viewBox="0 0 24 24"><path d="M12 3l7 3v6c0 4.6-3.1 7.8-7 9-3.9-1.2-7-4.4-7-9V6l7-3z"/></svg></div><div><div class="value-name">Prevención de conflictos</div><div class="value-sub">Resolver antes que litigar</div></div></div>
+      <div class="value-card"><div class="value-icon bg-green"><svg class="ico-svg" viewBox="0 0 24 24"><path d="M9 18h6"/><path d="M10 21h4"/><path d="M8 14a6 6 0 1 1 8 0c-1.3 1-2 2-2 4h-4c0-2-0.7-3-2-4z"/></svg></div><div><div class="value-name">Soluciones personalizadas</div><div class="value-sub">Cada caso es único y especial</div></div></div>
+      <div class="value-card"><div class="value-icon bg-purple"><svg class="ico-svg" viewBox="0 0 24 24"><path d="M12 3v4"/><path d="M5 7h14"/><path d="M7 7l-3 6h6l-3-6z"/><path d="M17 7l-3 6h6l-3-6z"/><path d="M12 13v8"/></svg></div><div><div class="value-name">Ética profesional</div><div class="value-sub">Integridad en cada actuación</div></div></div>
+    </div>
+    <div class="bottom-spacer"></div>
+  </div>
+
+</div>
+
+<!-- BOTTOM NAV -->
+<nav class="bottom-nav">
+  <button class="nav-item active" id="nav-home" onclick="navigateTo('home')">
+    <div class="nav-svg"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
+    <div class="nav-label">Inicio</div>
+  </button>
+  <button class="nav-item" id="nav-servicios" onclick="navigateTo('servicios')">
+    <div class="nav-svg"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div>
+    <div class="nav-label">Servicios</div>
+  </button>
+  <button class="nav-center" onclick="openSheet('consulta')">
+    <div class="nav-center-circle"><svg class="ico-svg" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+    <div class="nav-label" style="color:var(--gold);font-weight:700;font-size:9.5px">Consultar</div>
+  </button>
+  <button class="nav-item" id="nav-contacto" onclick="navigateTo('contacto')">
+    <div class="nav-svg"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.41 2 2 0 0 1 3.6 1.24h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.91a16 16 0 0 0 6 6l.91-.91a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21.73 16.92z"/></svg></div>
+    <div class="nav-label">Contacto</div>
+  </button>
+  <button class="nav-item" id="nav-nosotros" onclick="navigateTo('nosotros')">
+    <div class="nav-svg"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+    <div class="nav-label">Nosotros</div>
+  </button>
+</nav>
+
+<!-- SHEET -->
+<div class="sheet-overlay" id="sheet-overlay" onclick="closeSheet()">
+  <div class="sheet" onclick="event.stopPropagation()">
+    <div class="sheet-handle"></div>
+    <div id="sheet-body"></div>
+  </div>
+</div>
+
+<div class="install-modal-overlay" id="install-modal" onclick="closeInstallModal()">
+  <div class="install-modal" onclick="event.stopPropagation()">
+    <div class="install-modal-title">Instalar app</div>
+    <div class="install-modal-text" id="install-modal-text"></div>
+    <div class="install-modal-actions">
+      <button class="install-modal-close" onclick="closeInstallModal()">Entendido</button>
+    </div>
+  </div>
+</div>
+
+</div>
+<script>
+function navigateTo(page) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('page-' + page).classList.add('active');
+  const el = document.getElementById('nav-' + page);
+  if (el) el.classList.add('active');
+  document.querySelector('.scroll-area').scrollTop = 0;
+}
+
+const sheets = {
+  'consulta': { title: 'Consulta Gratuita', sub: 'Primera consulta sin costo · Te respondemos por WhatsApp',
+    html: `<div class="form-group"><label class="form-label">Tu nombre</label><input class="form-input" id="sh-nombre" type="text" placeholder="Nombre completo"></div>
+    <div class="form-group"><label class="form-label">Área legal</label><select class="form-input" id="sh-area"><option value="">Seleccionar área...</option><option>Derecho Constitucional</option><option>Derecho Penal</option><option>Derecho Civil</option><option>Derecho Mercantil</option><option>Derecho Laboral</option><option>Derecho Ambiental</option><option>Derechos Humanos</option><option>Derecho Internacional / Migración</option><option>Empresas / PYMEs</option><option>Otro</option></select></div>
+    <div class="form-group"><label class="form-label">Describe tu caso</label><textarea class="form-input form-textarea" id="sh-mensaje" placeholder="¿En qué podemos ayudarte?"></textarea></div>
+    <button class="submit-btn" onclick="sheetToWhatsApp()"><svg class="ico-svg" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Continuar en WhatsApp →</button>
+    <div style="text-align:center;margin-top:10px;font-size:11px;color:#9CA3AF">Serás redirigido a WhatsApp para completar tu consulta</div>`
+  },
+  'notif': { title: 'Notificaciones', sub: 'Novedades de TuAbogado.gt',
+    html: `<div class="sheet-list"><div class="sheet-item"><svg class="ico-svg" viewBox="0 0 24 24"><rect x="3" y="8" width="18" height="13" rx="2"/><path d="M3 12h18"/><path d="M12 8v13"/><path d="M8 8a2 2 0 1 1 4 0"/><path d="M12 8a2 2 0 1 1 4 0"/></svg><strong>¡Primera consulta GRATIS!</strong> Contáctanos hoy mismo.</div><div class="sheet-item"><svg class="ico-svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3a14 14 0 0 1 0 18"/><path d="M12 3a14 14 0 0 0 0 18"/></svg>Asesoría especializada en migración para guatemaltecos.</div><div class="sheet-item"><svg class="ico-svg" viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M9 7V5h6v2"/><path d="M3 12h18"/></svg>Nuevos servicios para PYMEs y emprendedores.</div></div>`
+  },
+  'buscar': { title: 'Buscar servicio', sub: 'Selecciona el área que necesitas',
+    html: `<div class="sheet-list">
+      <div class="sheet-item" style="cursor:pointer" onclick="closeSheet();setTimeout(()=>openSheet('servicio-1'),100)">Consultoría Legal</div>
+      <div class="sheet-item" style="cursor:pointer" onclick="closeSheet();setTimeout(()=>openSheet('servicio-2'),100)">Derecho Internacional / Migración</div>
+      <div class="sheet-item" style="cursor:pointer" onclick="closeSheet();setTimeout(()=>openSheet('servicio-3'),100)">Empresas y PYMEs</div>
+      <div class="sheet-item" style="cursor:pointer" onclick="closeSheet();setTimeout(()=>openSheet('servicio-4'),100)">Derecho Ambiental</div>
+      <div class="sheet-item" style="cursor:pointer" onclick="closeSheet();setTimeout(()=>openSheet('servicio-5'),100)">Derecho Laboral</div>
+      <div class="sheet-item" style="cursor:pointer" onclick="closeSheet();setTimeout(()=>openSheet('servicio-6'),100)">Derechos Humanos</div>
+    </div>`
+  },
+  'servicio-1': { title: 'Consultoría Legal', sub: 'Asesoría en todas las ramas del derecho guatemalteco', items: ['Derecho Constitucional','Derecho Penal','Derecho Civil','Derecho Mercantil','Derecho Corporativo','Derecho Laboral','Derecho Ambiental','Derechos Humanos','Protección Patrimonio Cultural'] },
+  'servicio-2': { title: 'Derecho Internacional', sub: 'Asesoría especializada en migración y derecho internacional', items: ['Derecho Internacional','Asesoría sobre Migrantes','Trámites migratorios','Regularización de estatus','Derechos de migrantes','Recursos y apelaciones'] },
+  'servicio-3': { title: 'Empresas y PYMEs', sub: 'Soluciones legales para emprendedores y empresas', items: ['Servicios Legales para Emprendedores','Constitución de empresas','Contratos comerciales','Derecho Corporativo','Asesoría a PYMEs','Protección de marca e IP'] },
+  'servicio-4': { title: 'Derecho Ambiental', sub: 'Protección del entorno y patrimonio', items: ['Derecho Ambiental','Protección Patrimonio Cultural','Licencias y permisos ambientales','Recursos de amparo ambiental','Conflictos por recursos naturales'] },
+  'servicio-5': { title: 'Derecho Laboral', sub: 'Defensa de tus derechos en el trabajo', items: ['Contratos laborales','Despidos injustificados','Conflictos patrono-trabajador','Liquidaciones y prestaciones','Inspección laboral','Sindicatos y negociación colectiva'] },
+  'servicio-6': { title: 'Derechos Humanos', sub: 'Defensa y promoción de los derechos fundamentales', items: ['Protección de derechos fundamentales','Recursos de amparo','Denuncia ante organismos internacionales','Violaciones a derechos civiles','Derechos de grupos vulnerables'] }
+};
+
+function openSheet(key) {
+  const data = sheets[key]; if (!data) return;
+  let html = `<div class="sheet-title">${data.title}</div><p class="sheet-sub">${data.sub}</p>`;
+  if (data.items) {
+    html += `<div class="sheet-list">${data.items.map(i=>`<div class="sheet-item">${i}</div>`).join('')}</div>`;
+    const waMsg = encodeURIComponent(`Hola, me interesa información sobre: *${data.title}*. ¿Podrían orientarme? (primera consulta gratuita)`);
+    html += `<a href="https://wa.me/+50239888383?text=${waMsg}" target="_blank" style="display:block;text-decoration:none;margin-top:16px"><button class="submit-btn"><svg class="ico-svg" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Consultar por WhatsApp →</button></a>`;
+    html += `<div style="text-align:center;margin-top:8px;font-size:11px;color:#9CA3AF">Primera consulta GRATIS · Respuesta inmediata</div>`;
+  } else if (data.html) { html += data.html; }
+  document.getElementById('sheet-body').innerHTML = html;
+  document.getElementById('sheet-overlay').classList.add('open');
+}
+
+function closeSheet() { document.getElementById('sheet-overlay').classList.remove('open'); }
+
+function sheetToWhatsApp() {
+  const n = (document.getElementById('sh-nombre')||{}).value||'';
+  const a = (document.getElementById('sh-area')||{}).value||'';
+  const m = (document.getElementById('sh-mensaje')||{}).value||'';
+  let msg = '¡Hola! Solicito mi *consulta gratuita*.\n';
+  if (n) msg += `*Nombre:* ${n}\n`;
+  if (a) msg += `*Área legal:* ${a}\n`;
+  if (m) msg += `*Caso:* ${m}`;
+  window.open('https://wa.me/+50239888383?text=' + encodeURIComponent(msg.trim()), '_blank');
+  closeSheet();
+}
+
+function submitForm() {
+  const n = document.getElementById('f-nombre').value.trim();
+  const c = document.getElementById('f-contacto').value.trim();
+  const a = document.getElementById('f-area').value;
+  const m = document.getElementById('f-mensaje').value.trim();
+  if (!n) { document.getElementById('f-nombre').focus(); return; }
+  let msg = '¡Hola! Solicito mi *consulta gratuita*.\n';
+  msg += `*Nombre:* ${n}\n`;
+  if (c) msg += `*Contacto:* ${c}\n`;
+  if (a) msg += `*Área legal:* ${a}\n`;
+  if (m) msg += `*Caso:* ${m}`;
+  window.open('https://wa.me/+50239888383?text=' + encodeURIComponent(msg.trim()), '_blank');
+  document.getElementById('form-success').style.display = 'block';
+}
+
+let deferredInstallPrompt = null;
+function isStandaloneMode() {
+  return window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+}
+
+function installApp() {
+  if (deferredInstallPrompt) {
+    deferredInstallPrompt.prompt();
+    deferredInstallPrompt.userChoice.finally(() => {
+      deferredInstallPrompt = null;
+      const btn = document.getElementById('install-btn');
+      if (btn && isStandaloneMode()) btn.style.display = 'none';
+    });
+    return;
+  }
+
+  const ua = navigator.userAgent || '';
+  const isIOS = /iPad|iPhone|iPod/.test(ua);
+  if (isIOS) {
+    showInstallModal('En iPhone/iPad: abre Compartir y toca "Añadir a pantalla de inicio".');
+    return;
+  }
+  showInstallModal('Si no aparece la instalación automática, abre el menú del navegador y selecciona "Instalar app" o "Añadir a pantalla de inicio".');
+}
+
+function showInstallModal(message) {
+  const overlay = document.getElementById('install-modal');
+  const text = document.getElementById('install-modal-text');
+  if (!overlay || !text) return;
+  text.textContent = message;
+  overlay.classList.add('open');
+}
+
+function closeInstallModal() {
+  const overlay = document.getElementById('install-modal');
+  if (overlay) overlay.classList.remove('open');
+}
+
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredInstallPrompt = e;
+  const btn = document.getElementById('install-btn');
+  if (btn && !isStandaloneMode()) btn.style.display = 'flex';
+});
+
+window.addEventListener('appinstalled', () => {
+  deferredInstallPrompt = null;
+  const btn = document.getElementById('install-btn');
+  if (btn) btn.style.display = 'none';
+});
+
+window.addEventListener('load', () => {
+  const btn = document.getElementById('install-btn');
+  if (isStandaloneMode()) {
+    if (btn) btn.style.display = 'none';
+    return;
+  }
+  if (btn) btn.style.display = 'flex';
+});
+
+if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(()=>{});
+</script>
+</body>
+</html>
+
+
